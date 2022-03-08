@@ -1,0 +1,35 @@
+FROM node:14.18.0 as node
+FROM ruby:2.6.6
+
+LABEL maintainer "Shun-Ichiro Kaneshiro <kaneshiro@kosen-career.tech>"
+
+COPY --from=node /opt/yarn-v* /opt/yarn
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+
+# Bundlerのバージョン合わせ
+RUN gem install bundler -v '2.2.32'
+
+ENV APP /app
+RUN apt update -y && apt install -y \
+  postgresql \
+  tzdata \
+  libxslt-dev \
+  make \
+  gcc \
+  libc-dev \
+  libxml2 \
+  && rm -rf /var/lib/apt/lists/*
+
+# Ref: https://github.com/docker-library/ruby/blob/8ec0fe3a4d9bf9243a2b3247927169c139d5a1a1/2.6/alpine3.13/Dockerfile
+# don't create ".bundle" in all our apps
+ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
+	BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV PATH $GEM_HOME/bin:$PATH
+
+RUN bundle config set force_ruby_platform true
+
+# adjust permissions of a few directories for running "gem install" as an arbitrary user
+RUN mkdir -p "$GEM_HOME" && chmod 777 "$GEM_HOME"
+
+WORKDIR $APP

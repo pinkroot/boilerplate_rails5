@@ -1,24 +1,51 @@
-# README
+## ABOUT
+Rails5系のボイラープレートです。
+Heroku上で動作させる前提で構築しています。
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### 主なライブラリ・設定
+- postgres
+- active admin
 
-Things you may want to cover:
+## USAGE
+config/master.key
+を配備後、下記コマンドにて環境の立ち上げが可能です。  
+ホストPCのソースファイル等がDockerコンテナ内に同期され、データベースはDockerコンテナ上で動きつつもデータの永続化がされます。
 
-* Ruby version
+サーバは
+http://localhost:3008
+に立ち上がっています。
 
-* System dependencies
+### コマンド
+#### 初回起動・環境の再構築
+```
+make bundle
+make dbinit
+make up
+```
 
-* Configuration
+#### 2回目以降の起動
+```
+make up
+```
 
-* Database creation
+#### Gemfile変更時
+```
+make bundle
+```
 
-* Database initialization
+#### migration時
+```
+make migrate
+```
 
-* How to run the test suite
+### 仕組み
+Makefile内での定義を経由してdocker-composeコマンドを発火させています。  
+各コマンドの詳細が知りたい場合はMakefileを御覧ください。
 
-* Services (job queues, cache servers, search engines, etc.)
+## 開発環境でのメール確認
+letter_opener_webを導入しているため、RAILS_ENV=development環境下では
 
-* Deployment instructions
+http://localhost:3008/letter_opener
 
-* ...
+にて送信メールの確認が可能です。  
+SendGrid等を経由してのメール送信は行われません。
