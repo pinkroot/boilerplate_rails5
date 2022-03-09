@@ -1,0 +1,15 @@
+// Active Admin's got SASS!
+@import "active_admin/mixins";
+@import "active_admin/base";
+
+.active_admin_agent_image {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.attributes_table {
+  img {
+    max-height: 200px;
+  }
+}
