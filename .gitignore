@@ -33,5 +33,5 @@
 
 !.keep
 
-# private repositoryのため環境変数ファイルもpushする
-# .env
+# private repositoryの場合は環境変数ファイルもpushする
+.env
