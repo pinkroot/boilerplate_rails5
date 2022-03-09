@@ -51,8 +51,6 @@ gem 'fog-aws'
 
 gem 'dotenv-rails'
 
-gem 'line-bot-api'
-
 # cron
 gem 'whenever', require: false
 
